@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[649],{649:(e,n,c)=>{c.r(n),c.d(n,{SpeechRecognition:()=>h});let h=(0,c(2587).F3)("SpeechRecognition",{web:()=>c.e(563).then(c.bind(c,8563)).then(e=>new e.SpeechRecognitionWeb)})}}]);

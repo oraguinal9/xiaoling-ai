@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[513],{7513:(e,n,t)=>{t.d(n,{nativePlay:()=>u});function u(e){let n=window.NativeAudio;return!!n&&"function"==typeof n.play&&(n.play(e),!0)}}}]);

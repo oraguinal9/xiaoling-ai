@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[513],{7513:(e,t,n)=>{n.d(t,{nativePlay:()=>a});function a(e){try{let t=document.createElement("iframe");return t.style.display="none",t.src="nativeaudio://play?url=".concat(encodeURIComponent(e)),document.body.appendChild(t),setTimeout(()=>t.remove(),1e3),!0}catch(e){return!1}}}}]);

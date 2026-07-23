@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
+<body style="font-family:sans-serif;padding:20px">
+<h3>音频测试</h3>
+<button id="btn1" onclick="testDOM()" style="padding:16px;font-size:18px;margin:10px">1. DOM Audio播放</button><br>
+<button id="btn2" onclick="testWebAudio()" style="padding:16px;font-size:18px;margin:10px">2. Web Audio播放</button><br>
+<button id="btn3" onclick="testUnlockDOM()" style="padding:16px;font-size:18px;margin:10px">3. 先解锁再播放</button><br>
+<button id="btn4" onclick="testFetch()" style="padding:16px;font-size:18px;margin:10px">4. Fetch+DOM播放</button><br>
+<div id="log" style="margin-top:20px;padding:10px;background:#f0f0f0;border-radius:8px"></div>
+<script>
+function log(msg) {
+  document.getElementById("log").innerHTML += "<br>" + msg;
+  console.log(msg);
+}
+
+async function testDOM() {
+  log("=== 测试1: DOM Audio ===");
+  const a = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=");
+  document.body.appendChild(a);
+  try { await a.play(); log("✅ DOM Audio 播放成功"); } catch(e) { log("❌ DOM Audio 失败: "+e.message); }
+}
+
+function testWebAudio() {
+  log("=== 测试2: Web Audio ===");
+  try {
+    const ctx = new AudioContext();
+    const buf = ctx.createBuffer(1, 1, ctx.sampleRate);
+    const src = ctx.createBufferSource();
+    src.buffer = buf; src.connect(ctx.destination); src.start(0);
+    src.onended = () => log("✅ Web Audio 播放成功");
+  } catch(e) { log("❌ Web Audio 失败: "+e.message); }
+}
+
+async function testUnlockDOM() {
+  log("=== 测试3: 解锁后播放 ===");
+  const a = document.createElement("audio");
+  a.id = "test-audio";
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.src = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+  try {
+    await a.play();
+    log("✅ 解锁成功");
+    a.pause();
+    // 再播放
+    a.src = "https://xiaoling.zbjh.top/tts?text=你好你好&style=tianmei";
+    a.load();
+    await a.play();
+    log("✅ 解锁后播放成功");
+  } catch(e) { log("❌ 解锁后播放失败: "+e.message); }
+}
+
+async function testFetch() {
+  log("=== 测试4: Fetch+Blob播放 ===");
+  try {
+    const res = await fetch("https://xiaoling.zbjh.top/tts?text=测试&style=tianmei");
+    const blob = await res.blob();
+    log("FETCH OK: "+blob.size+" bytes, type="+blob.type);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("audio");
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.src = url;
+    a.load();
+    try {
+      await a.play();
+      log("✅ Fetch+Blob播放成功");
+    } catch(e) {
+      log("❌ Fetch+Blob播放失败: "+e.message);
+    }
+  } catch(e) { log("❌ Fetch失败: "+e.message); }
+}
+</script>
+</body>
+</html>
